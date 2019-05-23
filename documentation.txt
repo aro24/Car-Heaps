@@ -1,0 +1,39 @@
+My program is using 5 different data structures to store data:
+2 Priority Queues from IndexMinPQ.java on the class website
+2 HashMaps
+1 Array
+
+While this doesn't save memory, it allows for huge saves in terms of runtime.
+It's also very easy to implement, saving the engineering effort on my part.
+
+Adding a car can be log time, bound by the PQ. There is a counter called
+carCount, and it creates indexes for all the cars. Enter in the information and
+it's stored in both PQs. The vinCars HashMap stores cars by VIN. The carIndexes
+HashMap stores indexes used for the PQs. Finally, the Array carArray stores the
+new car based on carCount's number. All indexes are basically generated from
+carCount's value.
+
+Updating a car is also log time. The VIN is used in vinCars to get the
+associated car. Then the car's index in the PQ is generated from carIndexes.
+Then if need be, the associated car info is updated in the PQ, which may cause a
+shift within the PQ. If no shifts are needed, such as in changing color, this
+is all constant time.
+
+Removing a car is also log time. Same as above. Find the car in vinCars. Find
+the PQ index in carIndexes. Remove car info in both PQs. Heap rebalancing will
+cause the runtime to increase to log. Then the car is removed from both Hashmaps
+and the carArray at the given index is set to null. That wastes space, but
+remaking indexes and updating each heap with new ones would waste time.
+
+Getting the lowest mileage and price is both constant time. Just returns the
+minIndex from the appropriate heap, and uses that index to get the car info in
+carArray, and prints the car info with a toString() method in the Car class.
+
+Unfortunately, lowest price and mileage by make and model is greater than log.
+It's linear. I couldn't find a good way of searching efficiently. This is due to
+the IndexMinPQ iterator being linear to generate a heap copy. This is both slow
+for the project's standards and wasteful with space. Iterating through the PQ
+could also be linear, since the lowest price/mileage car of a make and model
+could be at the end of the PQ. Best case is constant time though, especially if
+the car that meets the requirements is the first thing the Iterator sees. Even
+at the best case, constant + linear=linear. Oops.
